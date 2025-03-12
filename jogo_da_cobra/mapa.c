@@ -52,7 +52,9 @@ void atualizar_ponto_mapa(MAPA* mapa, PONTO*p, char chara){
 
 void liberar_mapa(MAPA* mapa){
     if(mapa){
+
         liberar_ponto(mapa->comida);
+        free(mapa->vet);
         free(mapa);
     }
 }

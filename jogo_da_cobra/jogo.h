@@ -2,6 +2,9 @@
 #define JOGO_H
 #include "mapa.h"
 #include "cobra.h"
+#include <unistd.h>
+#include <termios.h>
+#include <fcntl.h>
 #define LARG 20 
 #define ALTU 10
 
@@ -30,6 +33,6 @@ void iniciar_mapa_jogo(JOGO* jogo);
 void eh_game_over_jogo(JOGO* jogo);
 
 void liberar_jogo(JOGO* jogo);
+void loop_jogo(JOGO* jogo);
 
-MAPA* retornar_mapa_jogo(JOGO* jogo);
 #endif

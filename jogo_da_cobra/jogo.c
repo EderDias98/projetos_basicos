@@ -9,6 +9,28 @@ struct jogo{
     int game_over;
 };
 
+// Desativa o buffer de entrada para capturar teclas sem precisar pressionar ENTER
+void desativar_buffer() {
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+    fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
+}
+
+// Restaura as configurações originais do terminal
+void restaurar_buffer() {
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag |= (ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+// Função para limpar a tela sem "piscar"
+void limpar_tela() {
+    printf("\033[H\033[J");
+}
+
 JOGO* criar_jogo(){
     JOGO* jogo = (JOGO*) malloc(sizeof(JOGO));
     jogo->game_over = 0;
@@ -29,6 +51,7 @@ int eh_encontrei_comida_jogo(JOGO* jogo){
 }
 
 void iniciar_jogo(JOGO* jogo){
+    desativar_buffer();
     jogo->mapa = criar_mapa(LARG, ALTU);
     jogo->cobra = criar_cobra();
     iniciar_mapa_jogo(jogo);
@@ -36,9 +59,7 @@ void iniciar_jogo(JOGO* jogo){
 
 }
 
-MAPA* retornar_mapa_jogo(JOGO* jogo){
-    return jogo->mapa;
-}
+
 
 void atualizar_jogo(JOGO* jogo){
     
@@ -138,4 +159,20 @@ void liberar_jogo(JOGO* jogo){
         liberar_cobra(jogo->cobra);
         free(jogo);
     }
+}
+
+void loop_jogo(JOGO* jogo){
+
+    while(1){
+        limpar_tela();
+        usleep(100000);
+        gerar_mapa(jogo->mapa);
+        if(retornar_game_over_jogo(jogo) == 1){
+            break;
+        }
+        atualizar_jogo(jogo);
+
+
+    }
+    restaurar_buffer();   
 }

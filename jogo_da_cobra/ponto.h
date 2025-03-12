@@ -19,6 +19,6 @@ void liberar_ponto(PONTO* p);
 
 PONTO* copiar_ponto(PONTO* p);
 
-int eh_igual_ponto(PONTO* p1, PONTO* p2);
+
 
 #endif
