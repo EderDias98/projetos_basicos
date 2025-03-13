@@ -1,6 +1,5 @@
 #include "jogo.h"
-#include <unistd.h>
-#include <termios.h>
+
 
 struct jogo{
     MAPA* mapa;
@@ -9,27 +8,7 @@ struct jogo{
     int game_over;
 };
 
-// Desativa o buffer de entrada para capturar teclas sem precisar pressionar ENTER
-void desativar_buffer() {
-    struct termios term;
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-    fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
-}
 
-// Restaura as configurações originais do terminal
-void restaurar_buffer() {
-    struct termios term;
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag |= (ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-}
-
-// Função para limpar a tela sem "piscar"
-void limpar_tela() {
-    printf("\033[H\033[J");
-}
 
 JOGO* criar_jogo(){
     JOGO* jogo = (JOGO*) malloc(sizeof(JOGO));
@@ -91,14 +70,14 @@ void atualizar_jogo(JOGO* jogo){
 
 
 char retornar_direcao_cabeca(JOGO* jogo){
-    char dir = 'T';
+    char dir = '>';
     if(jogo->tecla_atual == 'd'){
         dir = '>';
     }else if(jogo->tecla_atual == 'a'){
         dir = '<';
     }else if(jogo->tecla_atual == 'w'){
         dir = '^';
-    }else if(jogo->tecla_atual){
+    }else if(jogo->tecla_atual == 's'){
         dir = 'V';
     }
     return dir;
@@ -165,7 +144,7 @@ void loop_jogo(JOGO* jogo){
 
     while(1){
         limpar_tela();
-        usleep(100000);
+        usleep(200000);
         gerar_mapa(jogo->mapa);
         if(retornar_game_over_jogo(jogo) == 1){
             break;

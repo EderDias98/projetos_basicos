@@ -32,6 +32,7 @@ void atualizar_cabeca_cobra(int tecla, PONTO* p){
     atualizar_ponto(p, retornar_ponto_x(p), retornar_ponto_y(p)+1);
         break;
     default:
+        atualizar_ponto(p, retornar_ponto_x(p)+1, retornar_ponto_y(p));
         break;
     }
 }
