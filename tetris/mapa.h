@@ -20,4 +20,5 @@ int retorna_largura_mapa(MAPA* m);
 void atualizar_mapa(MAPA* m, int ind, int num);
 
 int congelar_peca_mapa(MAPA*m, PECA* p, int* p_c);
+void gerar_mapa(MAPA* m);
 #endif

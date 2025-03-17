@@ -23,13 +23,17 @@ JOGO* criar_jogo(){
 
 void jogar_jogo(JOGO* j){
     desativar_buffer();
+    gerar_mapa(j->mapa);
     PECA* estado_anterior;
+    restaurar_buffer();
+    exit(-1);
     while(1){
        
         limpar_tela();
-        if(j->peca_congelada = 1){
+        if(j->peca_congelada == 1){
             // liberar peca;
             j->peca_atual = criar_peca(escolher_peca());
+            j->peca_congelada = 0;
         }
         estado_anterior = salvar_estado_peca(j->peca_atual);
         cair_peca(j->peca_atual);
@@ -59,7 +63,8 @@ void jogar_jogo(JOGO* j){
         }
 
         desenhar_peca_mapa(j->mapa, j->peca_atual);
-
+        
+        gerar_mapa(j->mapa);
     }
    
 }   

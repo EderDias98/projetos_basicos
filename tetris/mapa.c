@@ -9,11 +9,27 @@ struct mapa
 };
 
 
+void iniciar_mapa(MAPA* m){
+    for(int i=0; i< m->altu ; i++){
+        for(int j=0; j< m->larg; j++){
+            int ind = retorna_indice_mapa(i,j,m->larg);
+            m->vet[ind] =1;
+            if(i==0 || i == m->altu -1 || j==0 || j == m->larg -1){
+                m->vet[ind] = 3;
+            }
+        }
+
+    }
+
+}
+
 MAPA* criar_mapa(int larg, int altu){
     MAPA* m = (MAPA*) malloc(sizeof(MAPA));
     m->vet = (int*) malloc(sizeof(int)*larg*altu);
     m->altu = altu;
     m->larg =larg;
+    iniciar_mapa(m);
+    return m;
 }
 
 
@@ -67,7 +83,7 @@ void desenhar_peca_mapa(MAPA*m,PECA* p){
     {
         for (int l = 0; l < 4; l++)
         {
-            int ind_p = retorna_indice_peca(k, l, 4);
+            int ind_p = retorna_indice_peca(k, l);
             int num = retornar_conteudo_peca(p, ind_p);
             int ind_m = retorna_indice_mapa(i + l, j + k, m->larg);
             m->vet[ind_m] = num;
@@ -95,7 +111,7 @@ int congelar_peca_mapa(MAPA*m, PECA* p, int* p_c){
     {
         for (int l = 0; l < 4; l++)
         {
-            int ind_p = retorna_indice_peca(k, l, 4);
+            int ind_p = retorna_indice_peca(k, l);
             int num_p = retornar_conteudo_peca(p, ind_p);
             int ind_m = retorna_indice_mapa(i + l, j + k, m->larg);
             int num_m = m->vet[ind_m];
@@ -106,5 +122,5 @@ int congelar_peca_mapa(MAPA*m, PECA* p, int* p_c){
             }
         }
     }
-
+    return -1;
 }
